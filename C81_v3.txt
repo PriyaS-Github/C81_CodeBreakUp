@@ -1,0 +1,146 @@
+
+step 1
+
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+
+export default class CreateStory extends Component {
+    render() {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}>
+                <Text>Create Story</Text>
+            </View>
+        )
+    }
+}
+
+-----------------------------------------------------------
+
+step 2
+
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feed from "./screens/Feed";
+import CreateStory from "./screens/CreateStory";
+
+const Tab = createBottomTabNavigator();
+export default function App() {
+    return (
+        <NavigationContainer>
+            <Tab.Navigator
+                screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+                if (route.name === 'Feed') {
+                    iconName = focused
+                    ? 'book'
+                    : 'book-outline';
+                } else if (route.name === 'CreateStory') {
+                    iconName = focused ? 'create' : 'create-outline';
+                }
+                return <Ionicons name={iconName} size={size} color={color} />;
+                    },
+                })}
+                tabBarOptions={{
+                    activeTintColor: 'tomato',
+                    inactiveTintColor: 'gray',
+                }}
+            >
+            <Tab.Screen name="Feed" component={Feed} />
+            <Tab.Screen name="CreateStory" component={CreateStory} />
+            </Tab.Navigator>
+        </NavigationContainer>
+    );
+}
+
+-----------------------------------------------------------------
+
+step 3
+
+create folder navigation, TabNavigator.js
+
+
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feed from "../screens/Feed";
+import CreateStory from "../screens/CreateStory";
+
+const Tab = createBottomTabNavigator();
+
+const BottomTabNavigator = () => {
+    return (
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    if (route.name === 'Feed') {
+                        iconName = focused
+                            ? 'book'
+                            : 'book-outline';
+                    } else if (route.name === 'CreateStory') {
+                        iconName = focused ? 'create' : 'create-outline';
+                    }
+                    return <Ionicons name={iconName} size={size} color={color} />;
+                },
+            })}
+            tabBarOptions={{
+                activeTintColor: 'tomato',
+                inactiveTintColor: 'gray',
+            }}
+        >
+            <Tab.Screen name="Feed" component={Feed} />
+            <Tab.Screen name="CreateStory" component={CreateStory} />
+        </Tab.Navigator>
+    );
+}
+
+export default BottomTabNavigator
+------------------------------------------------
+step 4
+
+
+create DrawerNavigator.js 
+
+import React from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import TabNavigator from "./TabNavigator";
+import Profile from "../screens/Profile";
+
+const Drawer = createDrawerNavigator();
+
+const DrawerNavigator = () => {
+    return (
+        <Drawer.Navigator>
+            <Drawer.Screen name="Home" component={TabNavigator} />
+            <Drawer.Screen name="Profile" component={Profile} />
+        </Drawer.Navigator>
+    );
+};
+
+export default DrawerNavigator;
+
+---------------------------------------------
+step 5
+
+in app.js 
+
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import DrawerNavigator from "./navigation/DrawerNavigator";
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <DrawerNavigator />
+    </NavigationContainer>
+  );
+}
+-------------------------------------------------
